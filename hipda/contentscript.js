@@ -13,3 +13,21 @@ $(function(){
     console.log(url2);
     // $.get(url2);
 })
+
+$.get( "https://www.hi-pda.com/forum/pm.php?action=viewblack", function( data ) {
+
+var arr = [];
+ 
+var el = $( '<div></div>' );
+el.html(data);
+$('.blacklist  a[class=remove]',el).each(function(){
+    var gbkusername = $(this).attr('href').split("user=")[1];
+    decodedusername = GBK.URI.decodeURI(gbkusername);
+    arr.push(decodedusername);
+
+
+
+});
+console.log(arr);
+
+});
