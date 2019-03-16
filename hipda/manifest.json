@@ -19,7 +19,7 @@
 
 "content_scripts": [
   {
-    "matches": ["https://www.hi-pda.com/forum/search.php*"],
+    "matches": ["https://www.hi-pda.com/forum/*"],
     "js": ["jquery3.js","gbk.js","contentScript.js"],
     "run_at": "document_start"
   }
