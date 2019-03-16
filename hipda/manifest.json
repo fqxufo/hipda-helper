@@ -5,8 +5,7 @@
   "permissions": ["activeTab", "declarativeContent", "storage"],
   
   "background": {
-    "scripts": ["gbk.js","background.js"],
-    "persistent": false
+    "scripts": ["jquery3.js","gbk.js","background.js"]
   },
   "omnibox": { "keyword" : "hi" },
   
