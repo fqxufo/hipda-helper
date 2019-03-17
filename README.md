@@ -1,5 +1,11 @@
+<a href="https://chrome.google.com/webstore/detail/mmlkhkccadgochofbhcjnpgcfokbickl/" target="_blank">
+	<img width="300px" src="http://ww3.sinaimg.cn/large/5fd37818jw1eq7bx4bc4ej20c0038mx9.jpg">
+</a>
+
 # hipda-helper 
 hi-pda论坛助手chrome扩展程序
+
+
 
 ## 提供以下功能:
 - 黑名单用户屏蔽(与安卓客户端同步名单)
