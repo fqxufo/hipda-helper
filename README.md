@@ -1,6 +1,4 @@
-<a href="https://chrome.google.com/webstore/detail/mmlkhkccadgochofbhcjnpgcfokbickl/" target="_blank">
-	<img width="300px" src="http://ww3.sinaimg.cn/large/5fd37818jw1eq7bx4bc4ej20c0038mx9.jpg">
-</a>
+[![alt text](http://ww3.sinaimg.cn/large/5fd37818jw1eq7bx4bc4ej20c0038mx9.jpg "商店地址")](https://chrome.google.com/webstore/detail/mmlkhkccadgochofbhcjnpgcfokbickl/)
 
 # hipda-helper 
 hi-pda论坛助手chrome扩展程序
