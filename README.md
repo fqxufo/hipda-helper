@@ -1,4 +1,5 @@
-# hipda-helper
+# hipda-helper 
+hi-pda论坛助手chrome扩展程序
 
 ## 提供以下功能:
 - 黑名单用户屏蔽(与安卓客户端同步名单)
