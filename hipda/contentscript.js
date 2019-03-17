@@ -30,18 +30,41 @@ function block(url, blacklist) {
     }
 
     //帖子内容页面屏蔽
-    if (url.indexOf('viewthread')>0){
+    if (url.indexOf('viewthread') > 0) {
         var postList = $('.mainbox>div')
-        $(postList).each(function(){
-            var userName = $('.postinfo>a',this).text()
-            if (blacklist.indexOf(userName)>0){
+        $(postList).each(function () {
+            var userName = $('.postinfo>a', this).text()
+            if (blacklist.indexOf(userName) > 0) {
                 $(this).hide();
             }
         })
     }
 }
 
+//在帖子内容页面id信息栏添加加入黑名单按钮
+function addToBlackList(url) {
+    if (url.indexOf('viewthread') > 0) {
+        $('li.buddy').each(function () {
 
+            var postauthor = $(this).parents('.postauthor');
+            var userName = $('.postinfo>a', postauthor).text();
+            var listr = "<li style='background-image: url(/forum/images/icons/icon11.gif);'><a href='javascript:void(0)' class='block_it' title='加入黑名单'"
+                + "usernamestr=" + userName + ">加黑名单</a></li>"
+            $(this).after(listr);
+        })
+
+        var formhashstr = $('#umenu > a:nth-child(8)').attr('href').split('formhash=')[1]
+        $('.block_it').click(function () {
+            var name = $(this).attr('usernamestr');
+            var confirm_msg = confirm("您确认将 " + name + " 加入黑名单么？");
+            var addblockurl_raw = 'https://www.hi-pda.com/forum/pm.php?action=addblack&formhash=' + formhashstr + '&user=' + name;
+            var addblockurl_encoded = GBK.URI.encodeURI(addblockurl_raw);
+            if (confirm_msg == true) {
+                $.get(addblockurl_encoded);
+            }
+        })
+    }
+}
 
 //脚本主入口,页面加载时执行
 $(function () {
@@ -50,9 +73,13 @@ $(function () {
 
     //通过chrome.storage获取黑名单,进行屏蔽功能
     chrome.storage.local.get('blacklist', function (result) {
-        console.log('Value currently is ' + result.blacklist);
+        // console.log('黑名单数据: ' + result.blacklist);
         block(urlOfPage, result.blacklist);
     });
+
+    addToBlackList(urlOfPage);
+
+
 })
 
 
