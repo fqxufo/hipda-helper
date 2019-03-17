@@ -29,14 +29,25 @@ function getBlackList() {
     console.log(n + arr);
 
     chrome.storage.local.get('blacklist', function(result) {
-      console.log('Value currently is ' + result.blacklist);
-      console.log(result.blacklist.indexOf("夏雪宜"));
+      // console.log('Value currently is ' + result.blacklist);
+      // console.log(result.blacklist.indexOf("夏雪宜"));
     });
 
   });
 }
 
-setInterval(getBlackList, 10 * 1000);
+setInterval(getBlackList, 60 * 1000);
+
+
+
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
+
+{
+    //新加入黑名单会触发重新获取黑名单动作
+    if(request.command == 'refresh_blacklist'){
+      getBlackList();
+    }
+});
 
 
 

@@ -16,6 +16,14 @@ function reviveFullSearch(url) {
 }
 
 
+//屏蔽BS版置顶帖
+function removeBSstickthreads(url) {
+    if (url.indexOf('fid=6') >0 ){
+        $('tbody[id^="stickthread"]').hide()
+    }
+}
+
+
 //黑名单屏蔽功能
 function block(url, blacklist) {
     //帖子列表页面屏蔽
@@ -60,7 +68,11 @@ function addToBlackList(url) {
             var addblockurl_raw = 'https://www.hi-pda.com/forum/pm.php?action=addblack&formhash=' + formhashstr + '&user=' + name;
             var addblockurl_encoded = GBK.URI.encodeURI(addblockurl_raw);
             if (confirm_msg == true) {
-                $.get(addblockurl_encoded);
+                $.get(addblockurl_encoded,function(){
+                    //给background.js发消息,执行重新获取黑名单动作
+                    chrome.runtime.sendMessage({command: 'refresh_blacklist'});
+                });
+                
             }
         })
     }
@@ -70,6 +82,9 @@ function addToBlackList(url) {
 $(function () {
     var urlOfPage = window.location.href;
     reviveFullSearch(urlOfPage);
+    removeBSstickthreads(urlOfPage);
+
+
 
     //通过chrome.storage获取黑名单,进行屏蔽功能
     chrome.storage.local.get('blacklist', function (result) {
@@ -77,6 +92,7 @@ $(function () {
         block(urlOfPage, result.blacklist);
     });
 
+    //用户手动添加黑名单
     addToBlackList(urlOfPage);
 
 
