@@ -2,7 +2,7 @@
   "name": "hipda helper",
   "version": "0.52",
   "description": "hipda助手扩展",
-  "permissions": ["activeTab", "declarativeContent", "storage","tabs"],
+  "permissions": ["activeTab", "declarativeContent", "storage" ],
   
   "background": {
     "scripts": ["jquery3.js","gbk.js","background.js"]

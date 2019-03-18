@@ -25,10 +25,10 @@ function getBlackList() {
     });
     var d = new Date();
     var n = d.toLocaleTimeString();
-    chrome.storage.local.set({'blacklist':arr});
+    chrome.storage.local.set({ 'blacklist': arr });
     console.log(n + arr);
 
-    chrome.storage.local.get('blacklist', function(result) {
+    chrome.storage.local.get('blacklist', function (result) {
       // console.log('Value currently is ' + result.blacklist);
       // console.log(result.blacklist.indexOf("夏雪宜"));
     });
@@ -40,13 +40,11 @@ setInterval(getBlackList, 60 * 1000);
 
 
 
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
-
-{
-    //新加入黑名单会触发重新获取黑名单动作
-    if(request.command == 'refresh_blacklist'){
-      getBlackList();
-    }
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  //新加入黑名单会触发重新获取黑名单动作
+  if (request.command == 'refresh_blacklist') {
+    getBlackList();
+  }
 });
 
 

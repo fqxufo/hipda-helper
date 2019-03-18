@@ -16,6 +16,53 @@ function reviveFullSearch(url) {
 }
 
 
+//好孩子看得见
+function goodboyCanSee(url) {
+    if (url.indexOf('viewthread') > 0) {
+        $('font[color="white"]').attr('color', 'red');
+    }
+}
+
+
+function hightlightOP(url) {
+    if (url.indexOf('viewthread') > 0) {
+        var threadTid  = url.split('tid=')[1].split('&')[0];
+        console.log(threadTid);
+
+        var pageNumber = 1;
+        rawPageNumber = url.split('page=')[1];
+        if (rawPageNumber) {
+            pageNumber = parseInt(rawPageNumber);
+        }
+        console.log(typeof pageNumber + pageNumber);
+
+        var userNameAnchor = $('div.postinfo > a')
+
+        if (pageNumber === 1){
+            sessionStorage.setItem('tid'+threadTid,$(userNameAnchor[0]).text());
+        }
+
+        var opOfPage = sessionStorage.getItem('tid'+threadTid);
+        console.log(opOfPage);
+
+        var opStr = '<div style="padding:0px 5px; border-radius:2px; margin-left:6px; display: inline-block;background-color:#3890ff;color:#fff">楼主</div>'
+
+
+        userNameAnchor.each(function(){
+            if ($(this).text() == opOfPage) {
+                $(this).after(opStr);
+            }
+
+        })
+
+
+        
+        
+
+    }
+}
+
+
 //屏蔽BS版置顶帖
 function removeBSstickthreads(url) {
     if (url.indexOf('fid=6') > 0) {
@@ -78,6 +125,12 @@ function addToBlackList(url) {
     }
 }
 
+
+
+
+
+//脚本主入口,页面加载时执行
+//脚本主入口,页面加载时执行
 //脚本主入口,页面加载时执行
 $(function () {
     var urlOfPage = window.location.href;
@@ -94,6 +147,13 @@ $(function () {
 
     //用户手动添加黑名单
     addToBlackList(urlOfPage);
+
+    //好孩子看得见(显示白色隐藏内容)
+    goodboyCanSee(urlOfPage);
+
+    //高亮楼主ID
+    hightlightOP(urlOfPage);
+
 
 
 })
