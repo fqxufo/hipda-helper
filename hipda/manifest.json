@@ -1,6 +1,6 @@
 {
   "name": "hipda helper",
-  "version": "0.53",
+  "version": "0.54",
   "description": "hipda助手扩展",
   "permissions": ["activeTab", "declarativeContent", "storage" ],
   
@@ -20,13 +20,13 @@
     "browser_action":
     {
         "default_title": "hipda助手插件",
-        "default_popup": "popup.html"
+        "default_popup": "popup/popup.html"
     },
 
 "content_scripts": [
   {
     "matches": ["https://www.hi-pda.com/forum/*"],
-    "js": ["jquery3.js","gbk.js","contentScript.js"],
+    "js": ["jquery3.js","gbk.js","contentscript.js"],
     "run_at": "document_start"
   }
 ]
