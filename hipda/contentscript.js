@@ -1,3 +1,14 @@
+//默认配置
+var defaultConfig = {
+    enableBlacklist: true,
+    pageWidth: "100%",
+    goodboySee: true,
+    blockBSTop: true,
+    highlightOP: true
+}
+
+
+
 //恢复全文搜索
 function reviveFullSearch(url) {
     //在搜索页面添加全文搜索的选项
@@ -26,7 +37,7 @@ function goodboyCanSee(url) {
 
 function hightlightOP(url) {
     if (url.indexOf('viewthread') > 0) {
-        var threadTid  = url.split('tid=')[1].split('&')[0];
+        var threadTid = url.split('tid=')[1].split('&')[0];
         console.log(threadTid);
 
         var pageNumber = 1;
@@ -38,17 +49,17 @@ function hightlightOP(url) {
 
         var userNameAnchor = $('div.postinfo > a')
 
-        if (pageNumber === 1){
-            sessionStorage.setItem('tid'+threadTid,$(userNameAnchor[0]).text());
+        if (pageNumber === 1) {
+            sessionStorage.setItem('tid' + threadTid, $(userNameAnchor[0]).text());
         }
 
-        var opOfPage = sessionStorage.getItem('tid'+threadTid);
+        var opOfPage = sessionStorage.getItem('tid' + threadTid);
         console.log(opOfPage);
 
         var opStr = '<div style="padding:0px 5px; border-radius:2px; margin-left:6px; display: inline-block;background-color:#3890ff;color:#fff">楼主</div>'
 
 
-        userNameAnchor.each(function(){
+        userNameAnchor.each(function () {
             if ($(this).text() == opOfPage) {
                 $(this).after(opStr);
             }
@@ -56,8 +67,8 @@ function hightlightOP(url) {
         })
 
 
-        
-        
+
+
 
     }
 }
@@ -126,6 +137,10 @@ function addToBlackList(url) {
 }
 
 
+function changePageWidth(newWidth){
+    $('body').css('margin','0 auto').css('width',newWidth);
+}
+
 
 
 
@@ -134,28 +149,74 @@ function addToBlackList(url) {
 //脚本主入口,页面加载时执行
 $(function () {
     var urlOfPage = window.location.href;
-    reviveFullSearch(urlOfPage);
-    removeBSstickthreads(urlOfPage);
+
+
+    chrome.storage.sync.get('extentionConfig', function (obj) {
+        reviveFullSearch(urlOfPage);
+        if (typeof obj.extentionConfig == 'undefined') {
+            chrome.storage.sync.set({ 'extentionConfig': defaultConfig });
+            removeBSstickthreads(urlOfPage);
+            //通过chrome.storage获取黑名单,进行屏蔽功能
+            chrome.storage.local.get('blacklist', function (result) {
+                // console.log('黑名单数据: ' + result.blacklist);
+                block(urlOfPage, result.blacklist);
+            });
+
+            //用户手动添加黑名单
+            addToBlackList(urlOfPage);
+
+            //好孩子看得见(显示白色隐藏内容)
+            goodboyCanSee(urlOfPage);
+
+            //高亮楼主ID
+            hightlightOP(urlOfPage);
+
+        }
 
 
 
-    //通过chrome.storage获取黑名单,进行屏蔽功能
-    chrome.storage.local.get('blacklist', function (result) {
-        // console.log('黑名单数据: ' + result.blacklist);
-        block(urlOfPage, result.blacklist);
+        if (typeof obj.extentionConfig !== 'undefined') {
+            currentConfig = obj.extentionConfig;
+            if (currentConfig.enableBlacklist) {
+                //通过chrome.storage获取黑名单,进行屏蔽功能
+                chrome.storage.local.get('blacklist', function (result) {
+                    // console.log('黑名单数据: ' + result.blacklist);
+                    block(urlOfPage, result.blacklist);
+                });
+                //用户手动添加黑名单
+                addToBlackList(urlOfPage);
+
+            }
+
+            if (currentConfig.goodboySee) {
+                //好孩子看得见(显示白色隐藏内容)
+                goodboyCanSee(urlOfPage);
+
+
+            }
+
+            if(currentConfig.blockBSTop) {
+                removeBSstickthreads(urlOfPage);
+            }
+
+            if (currentConfig.highlightOP) {
+                //高亮楼主ID
+                hightlightOP(urlOfPage);
+            }
+
+            if (currentConfig.pageWidth != '100%') {
+                changePageWidth(currentConfig.pageWidth);
+            }
+
+
+        }
+
+
+
     });
 
-    //用户手动添加黑名单
-    addToBlackList(urlOfPage);
-
-    //好孩子看得见(显示白色隐藏内容)
-    goodboyCanSee(urlOfPage);
-
-    //高亮楼主ID
-    hightlightOP(urlOfPage);
 
 
-
-})
+});
 
 

@@ -8,6 +8,9 @@ var defaultConfig = {
 }
 
 
+var currentConfig = JSON.parse(JSON.stringify(defaultConfig));
+
+
 
 //初始化所有ui
 function showOption(currentConfig) {
@@ -50,31 +53,33 @@ function showOption(currentConfig) {
 function userChangeOption(currentConfig) {
     $('#toggle_blacklist').on('switchChange.bootstrapSwitch', function (event, state) {
         currentConfig.enableBlacklist = state;
-        console.log(currentConfig);
+        // console.log(currentConfig);
     });
     $('#toggle_goodboy').on('switchChange.bootstrapSwitch', function (event, state) {
         currentConfig.goodboySee = state;
-        console.log(currentConfig);
+        // console.log(currentConfig);
     });
     $('#toggle_BSTop').on('switchChange.bootstrapSwitch', function (event, state) {
         currentConfig.blockBSTop = state;
-        console.log(currentConfig);
+        // console.log(currentConfig);
     });
     $('#toggle_highlightop').on('switchChange.bootstrapSwitch', function (event, state) {
         currentConfig.highlightOP = state;
-        console.log(currentConfig);
+        // console.log(currentConfig);
     });
 
     $('.droppagewidth>a').click(function () {
         $('#btnpageWidth').text($(this).text());
-        currentConfig.pageWidth = $(this).text()
-        console.log(currentConfig);
+        currentConfig.pageWidth = $(this).text();
+        // console.log(currentConfig);
     })
 }
 
 //确认配置,存储到chrome.storage
 function confirmChange(currentConfig) {
     $('#confirm').click(function () {
+        console.log('2' + currentConfig.pageWidth);
+        currentConfig.pageWidth = $('#btnpageWidth').text()
         chrome.storage.sync.set({ 'extentionConfig': currentConfig });
         $('.alert-success').fadeIn(1000);
 
@@ -85,8 +90,10 @@ function confirmChange(currentConfig) {
 //恢复默认配置
 function backToDefault(defaultConfig) {
     $('#backToDefault').click(function () {
+        currentConfig = JSON.parse(JSON.stringify(defaultConfig));
         showOption(defaultConfig);
         chrome.storage.sync.set({ 'extentionConfig': defaultConfig });
+        console.log('1' + currentConfig.pageWidth);
 
     });
 }
@@ -94,7 +101,7 @@ function backToDefault(defaultConfig) {
 
 $(function () {
 
-    var currentConfig = JSON.parse(JSON.stringify(defaultConfig));
+    
 
     chrome.storage.sync.get('extentionConfig', function (obj) {
 
@@ -107,8 +114,10 @@ $(function () {
         }
         showOption(currentConfig);
         userChangeOption(currentConfig);
+        
         confirmChange(currentConfig);
         backToDefault(defaultConfig);
+        
         console.log(currentConfig);
 
     });
