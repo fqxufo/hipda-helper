@@ -1,6 +1,6 @@
 {
   "name": "hipda helper",
-  "version": "0.54",
+  "version": "0.6",
   "description": "hipda助手扩展",
   "permissions": ["activeTab", "declarativeContent", "storage" ],
   
