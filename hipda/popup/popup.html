@@ -1,51 +1,189 @@
 <!doctype html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>hipda助手</title>
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap-switch.min.css">
+    <script src="../jquery3.js"></script>
+    <script src="./bootstrap.bundle.min.js"></script>
+    <script src="./bootstrap-switch.min.js"></script>
+
     <script src="popup.js"></script>
     <style>
-        body {
-            min-width: 211px;
-            padding: 10px;
-            font-size: 12px;
+        * {
+            margin: 0;
+            padding: 0;
         }
 
-        .blacklist,.feedback {
-            text-align:center;
+        body {
+            min-width: 250px;
+            max-width: 800px;
+            /* padding: 10px; */
+            font-size: 14px;
         }
-        a {
-            text-decoration: none;
-        }
+
+
 
         #vernumber {
+            height: 60px;
             margin-top: 5px;
             font-size: 20px;
             text-align: center;
         }
-        
+
+        .alert {
+            display: none;
+        }
+
+        #messageBox {
+            height: 60px;
+
+        }
     </style>
 
-   
+
 
 </head>
+
 <body>
-    <div class='blacklist'>
-        <p >管理黑名单</p>
-    <br />
-    <button ><a href='https://www.hi-pda.com/forum/pm.php?action=viewblack' target='_blank'>黑名单</a></button>  
-    </div>
-
-    <div class="feedback">
-        <p>反馈与建议</p>
-        <button ><a href='https://www.hi-pda.com/forum/viewthread.php?tid=2505417' target='_blank'>点我反馈</a></button> 
+    <div id='messageBox'>
+        <div class="alert alert-success" role="alert">
+            已保存设置,刷新页面生效
+        </div>
 
     </div>
+
+
+
+
+    <div class='option_blacklist'>
+        <a class="btn btn-outline-primary btn-sm btn-block" data-toggle="collapse" href="#collapse_blacklist"
+            role="button" aria-expanded="false" aria-controls="collapse_blacklist">
+            黑名单相关
+        </a>
+
+
+        <div class="collapse" id="collapse_blacklist">
+
+            <ul class='list-group'>
+                <li class='list-group-item'>
+                    <span>管理黑名单<span>
+                            <button class='btn btn-link btn-sm float-right'><a
+                                    href='https://www.hi-pda.com/forum/pm.php?action=viewblack'
+                                    target='_blank'>黑名单</a></button>
+                </li>
+                <li class='list-group-item'>
+                    <span>启用黑名单</span>
+
+                    <input type='checkbox' data-size='mini'  data-animate='false' id="toggle_blacklist" >
+
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+
+    <div class='option_ui'>
+        <a class="btn btn-outline-primary btn-sm btn-block" data-toggle="collapse" href="#collapse_ui" role="button"
+            aria-expanded="false" aria-controls="collapse_ui">
+            界面美化
+        </a>
+
+
+        <div class="collapse" id="collapse_ui">
+
+            <ul class='list-group'>
+
+                <li class='list-group-item'>
+                    <span>页面宽度</span>
+                    <div class="btn-group float-right  btn-sm">
+                        <button type="button" class="btn btn-outline-primary dropdown-toggle btn-sm"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="btnpageWidth">
+                            100%
+                        </button>
+                        <div class="dropdown-menu droppagewidth">
+                            <a class="dropdown-item" href="#">60%</a>
+                            <a class="dropdown-item" href="#">70%</a>
+                            <a class="dropdown-item" href="#">80%</a>
+                            <a class="dropdown-item" href="#">90%</a>
+                            <a class="dropdown-item" href="#">100%</a>
+                        </div>
+                    </div>
+                </li>
+                <li class='list-group-item'>
+                    <span>好孩子看得见</span>
+
+                    <input type='checkbox' data-size="mini" data-animate='false'	id="toggle_goodboy">
+
+                </li>
+                </li>
+                <li class='list-group-item'>
+                    <span>屏蔽BS版置顶帖</span>
+
+                    <input type='checkbox' data-size='mini'  data-animate='false' id="toggle_BSTop">
+
+                </li>
+
+                <li class='list-group-item'>
+                    <span>楼主高亮</span>
+
+                    <input type='checkbox' data-size='mini'  data-animate='false' id="toggle_highlightop">
+
+                </li>
+
+
+
+
+            </ul>
+
+        </div>
+    </div>
+
+    <div class='option_feedback'>
+        <a class="btn btn-outline-primary btn-sm btn-block" data-toggle="collapse" href="#collapse_feedback"
+            role="button" aria-expanded="false" aria-controls="collapse_feedback">
+            反馈与建议
+        </a>
+
+
+        <div class="collapse" id="collapse_feedback">
+
+            <ul class='list-group'>
+                <li class='list-group-item'>
+                    <span>论坛发布页<span>
+                            <button class='btn btn-link btn-sm float-right'><a
+                                    href='https://www.hi-pda.com/forum/viewthread.php?tid=2505417'
+                                    target='_blank'>点我反馈</a></button>
+                </li>
+                <li class='list-group-item'>
+                    <span>项目源代码<span>
+                            <button class='btn btn-link btn-sm float-right'><a
+                                    href='https://github.com/fqxufo/hipda-helper' target='_blank'>github</a></button>
+
+            </ul>
+
+        </div>
+    </div>
+
+
+    <button type="button" class="btn btn-outline-success btn-block" id="confirm">确认</button>
+    <button type="button" class="btn btn-outline-secondary btn-block">取消</button>
+
+    <button type="button" class="btn btn-outline-danger btn-block" id="backToDefault">恢复默认</button>
+
+
+
+
+
 
     <div id='vernumber'></div>
-    
+
 
 
 </body>
+
 </html>

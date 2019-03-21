@@ -23,6 +23,11 @@
         "default_popup": "popup/popup.html"
     },
 
+    "options_ui": {
+      "page": "popup/popup.html",
+      "open_in_tab": false
+    },
+
 "content_scripts": [
   {
     "matches": ["https://www.hi-pda.com/forum/*"],
