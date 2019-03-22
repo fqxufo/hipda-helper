@@ -8,6 +8,16 @@ var defaultConfig = {
 }
 
 
+//改变页面宽度,放在jquery load方法之外,可以解决页面闪烁的问题
+if (localStorage.getItem('pagewidth')) {
+    var style = document.createElement('style');
+    style.type = "text/css";
+    style.textContent = "body{width:" + localStorage.getItem('pagewidth') + ";margin:0 auto !important;}";
+    (document.body || document.head || document.documentElement).appendChild(style);
+}
+
+
+
 
 //恢复全文搜索
 function reviveFullSearch(url) {
@@ -136,10 +146,10 @@ function addToBlackList(url) {
     }
 }
 
-
-function changePageWidth(newWidth){
-    $('body').css('margin','0 auto').css('width',newWidth);
-}
+//不再使用,因为会导致页面闪烁问题
+// function changePageWidth(newWidth){
+//     $('body').css('margin','0 auto').css('width',newWidth);
+// }
 
 
 
@@ -195,7 +205,7 @@ $(function () {
 
             }
 
-            if(currentConfig.blockBSTop) {
+            if (currentConfig.blockBSTop) {
                 removeBSstickthreads(urlOfPage);
             }
 
@@ -205,7 +215,11 @@ $(function () {
             }
 
             if (currentConfig.pageWidth != '100%') {
-                changePageWidth(currentConfig.pageWidth);
+                localStorage.setItem('pagewidth', currentConfig.pageWidth);
+            }
+
+            if (currentConfig.pageWidth == '100%') {
+                localStorage.removeItem('pagewidth');
             }
 
 
