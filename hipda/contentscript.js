@@ -99,7 +99,7 @@ function block(url, blacklist) {
         var authorList = $('.author>cite>a')
         $(authorList).each(function () {
             var userName = $(this).text();
-            if (blacklist.indexOf(userName) > 0) {
+            if (blacklist.indexOf(userName) > -1) {
                 $(this).parents('tbody').hide();
             }
         });
@@ -110,7 +110,7 @@ function block(url, blacklist) {
         var postList = $('.mainbox>div')
         $(postList).each(function () {
             var userName = $('.postinfo>a', this).text()
-            if (blacklist.indexOf(userName) > 0) {
+            if (blacklist.indexOf(userName) > -1) {
                 $(this).hide();
             }
         })
