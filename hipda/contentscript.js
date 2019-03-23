@@ -99,14 +99,14 @@ function block(url, blacklist) {
         var authorList = $('.author>cite>a')
         $(authorList).each(function () {
             var userName = $(this).text();
-            if (blacklist.indexOf(userName) > -1) {
+            if (blacklist.indexOf(userName) > 0) {
                 $(this).parents('tbody').hide();
             }
         });
     }
 
     //帖子内容页面屏蔽
-    if (url.indexOf('viewthread') > -1) {
+    if (url.indexOf('viewthread') > 0) {
         var postList = $('.mainbox>div')
         $(postList).each(function () {
             var userName = $('.postinfo>a', this).text()
