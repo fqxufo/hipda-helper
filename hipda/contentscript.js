@@ -64,7 +64,7 @@ function hightlightOP(url) {
         }
 
         var opOfPage = sessionStorage.getItem('tid' + threadTid);
-        console.log(opOfPage);
+        console.log('楼主是' + opOfPage);
 
         var opStr = '<div style="padding:0px 5px; border-radius:2px; margin-left:6px; display: inline-block;background-color:#3890ff;color:#fff">楼主</div>'
 
@@ -93,15 +93,26 @@ function removeBSstickthreads(url) {
 
 
 //黑名单屏蔽功能
-function block(url, blacklist) {
+function block(url, blacklist,uidblacklist) {
     //帖子列表页面屏蔽
     if (url.indexOf('fid=') > 0) {
         var authorList = $('.author>cite>a')
         $(authorList).each(function () {
             var userName = $(this).text();
+            var useruid = $(this).attr('href').split('uid=')[1];
             if (blacklist.indexOf(userName) > -1) {
                 $(this).parents('tbody').hide();
+                console.log(userName + ' has been blocked');
             }
+
+            if (typeof uidblacklist !== 'undefined') {
+                if (uidblacklist.indexOf(useruid) > -1){
+                    $(this).parents('tbody').hide();
+                    console.log(userName + ' has been blocked');
+                }
+            }
+
+
         });
     }
 
@@ -110,10 +121,25 @@ function block(url, blacklist) {
         var postList = $('.mainbox>div')
         $(postList).each(function () {
             var userName = $('.postinfo>a', this).text()
+            // console.log(userName);
+            if (userName == ''){
+                return;
+            }
+            var useruid = $('.postinfo>a', this).attr('href').split('uid=')[1];
             if (blacklist.indexOf(userName) > -1) {
                 $(this).hide();
+                console.log(userName + ' has been blocked');
             }
-        })
+            if (typeof uidblacklist !== 'undefined') {
+                if (uidblacklist.indexOf(useruid) > -1){
+                    $(this).hide();
+                    console.log(userName + ' has been blocked');
+                }
+            }
+
+
+
+        });
     }
 }
 
@@ -169,7 +195,7 @@ $(function () {
             //通过chrome.storage获取黑名单,进行屏蔽功能
             chrome.storage.local.get('blacklist', function (result) {
                 // console.log('黑名单数据: ' + result.blacklist);
-                block(urlOfPage, result.blacklist);
+                block(urlOfPage, result.blacklist,result.uidblacklist);
             });
 
             //用户手动添加黑名单
@@ -189,9 +215,9 @@ $(function () {
             currentConfig = obj.extentionConfig;
             if (currentConfig.enableBlacklist) {
                 //通过chrome.storage获取黑名单,进行屏蔽功能
-                chrome.storage.local.get('blacklist', function (result) {
+                chrome.storage.local.get(['blacklist','uidblacklist'], function (result) {
                     // console.log('黑名单数据: ' + result.blacklist);
-                    block(urlOfPage, result.blacklist);
+                    block(urlOfPage, result.blacklist,result.uidblacklist);
                 });
                 //用户手动添加黑名单
                 addToBlackList(urlOfPage);

@@ -16,8 +16,49 @@ function getBlackList() {
     var el = $('<div></div>');
     el.html(data);
     $('.blacklist  a[class=remove]', el).each(function () {
+
+
       var gbkusername = $(this).attr('href').split("user=")[1];
-      decodedusername = GBK.URI.decodeURI(gbkusername);
+      // console.log(gbkusername);
+
+      try {
+        decodedusername = GBK.URI.decodeURI(gbkusername);
+      }
+      catch (error) {
+        console.log('不支持繁体字ID')
+        infoUrl = 'https://www.hi-pda.com/forum/space.php?username=' + gbkusername;
+        $.get(infoUrl, function (infopage) {
+          console.log(infopage.match(/eccredit.php\?uid=\d+/));
+          var uidurl = infopage.match(/eccredit.php\?uid=\d+/)[0];
+          var newuid = uidurl.split('uid=')[1];
+          var uidblackarr = [];
+          chrome.storage.local.get('uidblacklist', function (result) {
+            if (typeof result.uidblacklist == 'undefined') {
+              console.log(result.uidblacklist);
+              
+              
+              uidblackarr.push(newuid);
+              chrome.storage.local.set({ 'uidblacklist': uidblackarr });
+              return;
+
+
+            }
+
+
+              uidblackarr = result.uidblacklist;
+              if (uidblackarr.indexOf(newuid) == -1){
+
+              uidblackarr.push(newuid);
+              }
+              chrome.storage.local.set({ 'uidblacklist': uidblackarr });
+              
+            
+          });
+        });
+
+        return;
+      }
+
       arr.push(decodedusername);
 
 
@@ -28,15 +69,16 @@ function getBlackList() {
     chrome.storage.local.set({ 'blacklist': arr });
     console.log(n + arr);
 
-    chrome.storage.local.get('blacklist', function (result) {
-      // console.log('Value currently is ' + result.blacklist);
-      // console.log(result.blacklist.indexOf("夏雪宜"));
-    });
+    // chrome.storage.local.get('blacklist', function (result) {
+    //   // console.log('Value currently is ' + result.blacklist);
+    //   // console.log(result.blacklist.indexOf("夏雪宜"));
+    // });
 
   });
 }
 
 setInterval(getBlackList, 60 * 1000);
+getBlackList();
 
 
 
