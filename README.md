@@ -12,7 +12,7 @@ hi-pda论坛助手chrome/firefox扩展程序
 
 - 恢复全文搜索
 
-- ominibox快捷搜索(浏览器地址栏输入hi,之后按tab键可以直接hipda全文搜索)
+- ominibox快捷搜索(浏览器地址栏输入hi,之后按tab键(火狐版本按空格键)可以直接hipda全文搜索)
 
 - 屏蔽BS版置顶帖
 
