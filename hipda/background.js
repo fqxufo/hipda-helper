@@ -6,7 +6,7 @@ chrome.omnibox.onInputEntered.addListener(
     chrome.tabs.create({ url: encodedurl });
   });
 
-//定时获取黑名单,存储在chrome.storage里
+// 定时获取黑名单,存储在chrome.storage里
 
 function getBlackList() {
   $.get("https://www.hi-pda.com/forum/pm.php?action=viewblack", function (data) {
@@ -28,16 +28,17 @@ function getBlackList() {
         console.log('不支持繁体字ID')
         infoUrl = 'https://www.hi-pda.com/forum/space.php?username=' + gbkusername;
         $.get(infoUrl, function (infopage) {
-          console.log(infopage.match(/eccredit.php\?uid=\d+/));
+          // console.log(infopage.match(/eccredit.php\?uid=\d+/));
           var uidurl = infopage.match(/eccredit.php\?uid=\d+/)[0];
           var newuid = uidurl.split('uid=')[1];
           var uidblackarr = [];
           chrome.storage.local.get('uidblacklist', function (result) {
             if (typeof result.uidblacklist == 'undefined') {
-              console.log(result.uidblacklist);
+              // console.log(result.uidblacklist);
               
-              
+              console.log('uidblacklist add' + newuid);
               uidblackarr.push(newuid);
+              
               chrome.storage.local.set({ 'uidblacklist': uidblackarr });
               return;
 
@@ -47,6 +48,7 @@ function getBlackList() {
 
               uidblackarr = result.uidblacklist;
               if (uidblackarr.indexOf(newuid) == -1){
+                console.log('uidblacklist add' + newuid);
 
               uidblackarr.push(newuid);
               }
@@ -90,5 +92,18 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 });
 
 
+//定时清除uidblacklist
+function autoremovechromestorage(){
+  chrome.storage.local.remove('uidblacklist',function(){
+    console.log('已清除uidblacklist')
+    var error = chrome.runtime.lastError;
+       if (error) {
+           console.error(error);
+       }
+   })
+}
 
+setInterval(autoremovechromestorage,120 * 1000);
+
+autoremovechromestorage();
 

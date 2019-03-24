@@ -2,10 +2,17 @@
   "name": "hipda helper",
   "version": "0.62",
   "description": "hipda助手扩展",
-  "permissions": ["activeTab", "declarativeContent", "storage" ],
+  "permissions": ["storage" ,
+    "webRequest","<all_urls>"],
   
   "background": {
     "scripts": ["jquery3.js","gbk.js","background.js"]
+  },
+  "applications": {
+    "gecko": {
+      "id": "fqxufo@gmail.com",
+      "strict_min_version": "53.0"
+    }
   },
   "omnibox": { "keyword" : "hi" },
   
