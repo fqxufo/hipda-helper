@@ -4,7 +4,8 @@ var defaultConfig = {
     pageWidth: "100%",
     goodboySee: true,
     blockBSTop: true,
-    highlightOP: true
+    highlightOP: true,
+    enableShortcut: false
 }
 
 
@@ -15,6 +16,40 @@ if (localStorage.getItem('pagewidth')) {
     style.textContent = "body{width:" + localStorage.getItem('pagewidth') + ";margin:0 auto !important;}";
     (document.body || document.head || document.documentElement).appendChild(style);
 }
+
+
+//增加我的主题,我的回复,我的收藏三个快捷入口(代码参考hipda tools脚本)
+function addShortcut() {
+    if (localStorage.getItem('enableshortcut')) {
+
+        if (document.getElementById('menu')) {
+
+
+            document.getElementById('umenu').appendChild(document.createTextNode(" | "));
+            menuitem = document.createElement('a');
+            menuitem.innerHTML = "我的主题";
+            menuitem.target = "_blank";
+            menuitem.href = 'http://' + document.domain + '/forum/my.php?item=threads';
+            document.getElementById('umenu').appendChild(menuitem);
+
+            document.getElementById('umenu').appendChild(document.createTextNode(" "));
+            menuitem = document.createElement('a');
+            menuitem.innerHTML = "我的回复";
+            menuitem.target = "_blank";
+            menuitem.href = 'http://' + document.domain + '/forum/my.php?item=posts';
+            document.getElementById('umenu').appendChild(menuitem);
+
+            document.getElementById('umenu').appendChild(document.createTextNode(" "));
+            menuitem = document.createElement('a');
+            menuitem.innerHTML = "我的收藏";
+            menuitem.target = "_blank";
+            menuitem.href = 'http://' + document.domain + '/forum/my.php?item=favorites&type=thread';
+            document.getElementById('umenu').appendChild(menuitem);
+        }
+
+    }
+}
+
 
 
 
@@ -93,7 +128,7 @@ function removeBSstickthreads(url) {
 
 
 //黑名单屏蔽功能
-function block(url, blacklist,uidblacklist) {
+function block(url, blacklist, uidblacklist) {
     //帖子列表页面屏蔽
     if (url.indexOf('fid=') > 0) {
         var authorList = $('.author>cite>a')
@@ -106,7 +141,7 @@ function block(url, blacklist,uidblacklist) {
             }
 
             if (typeof uidblacklist !== 'undefined') {
-                if (uidblacklist.indexOf(useruid) > -1){
+                if (uidblacklist.indexOf(useruid) > -1) {
                     $(this).parents('tbody').hide();
                     console.log(userName + ' has been blocked');
                 }
@@ -122,7 +157,7 @@ function block(url, blacklist,uidblacklist) {
         $(postList).each(function () {
             var userName = $('.postinfo>a', this).text()
             // console.log(userName);
-            if (userName == ''){
+            if (userName == '') {
                 return;
             }
             var useruid = $('.postinfo>a', this).attr('href').split('uid=')[1];
@@ -131,7 +166,7 @@ function block(url, blacklist,uidblacklist) {
                 console.log(userName + ' has been blocked');
             }
             if (typeof uidblacklist !== 'undefined') {
-                if (uidblacklist.indexOf(useruid) > -1){
+                if (uidblacklist.indexOf(useruid) > -1) {
                     $(this).hide();
                     console.log(userName + ' has been blocked');
                 }
@@ -185,6 +220,8 @@ function addToBlackList(url) {
 //脚本主入口,页面加载时执行
 $(function () {
     var urlOfPage = window.location.href;
+    //增加顶部菜单快捷入口
+    addShortcut();
 
 
     chrome.storage.sync.get('extentionConfig', function (obj) {
@@ -195,7 +232,7 @@ $(function () {
             //通过chrome.storage获取黑名单,进行屏蔽功能
             chrome.storage.local.get('blacklist', function (result) {
                 // console.log('黑名单数据: ' + result.blacklist);
-                block(urlOfPage, result.blacklist,result.uidblacklist);
+                block(urlOfPage, result.blacklist, result.uidblacklist);
             });
 
             //用户手动添加黑名单
@@ -215,9 +252,9 @@ $(function () {
             currentConfig = obj.extentionConfig;
             if (currentConfig.enableBlacklist) {
                 //通过chrome.storage获取黑名单,进行屏蔽功能
-                chrome.storage.local.get(['blacklist','uidblacklist'], function (result) {
+                chrome.storage.local.get(['blacklist', 'uidblacklist'], function (result) {
                     // console.log('黑名单数据: ' + result.blacklist);
-                    block(urlOfPage, result.blacklist,result.uidblacklist);
+                    block(urlOfPage, result.blacklist, result.uidblacklist);
                 });
                 //用户手动添加黑名单
                 addToBlackList(urlOfPage);
@@ -247,6 +284,18 @@ $(function () {
             if (currentConfig.pageWidth == '100%') {
                 localStorage.removeItem('pagewidth');
             }
+
+            if (currentConfig.enableShortcut) {
+                localStorage.setItem('enableshortcut', 'enable');
+            }
+
+            if (!currentConfig.enableShortcut) {
+                localStorage.removeItem('enableshortcut');
+            }
+
+
+
+
 
 
         }
