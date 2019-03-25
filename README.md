@@ -1,6 +1,7 @@
 [![alt text](http://ww3.sinaimg.cn/large/5fd37818jw1eq7bx4bc4ej20c0038mx9.jpg "商店地址")](https://chrome.google.com/webstore/detail/mmlkhkccadgochofbhcjnpgcfokbickl/)
 
 chrome版本https://chrome.google.com/webstore/detail/mmlkhkccadgochofbhcjnpgcfokbickl/
+
 火狐版本https://addons.mozilla.org/zh-CN/firefox/addon/hipda-helper/
 
 # hipda-helper 
