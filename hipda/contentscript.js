@@ -57,7 +57,7 @@ function addShortcut() {
 
 
 function pagePreview() {
-    if (localStorage.getItem('pagePreview')) {
+    if (localStorage.getItem('pagePreview') == 'on') {
         console.log('试验性预览功能已打开');
         var previewIframe = $('<iframe id="page_preview"></iframe>');
         previewIframe.css({ 'width': '600px', 'height': '500px', 'display': 'none', 'position': 'absolute', 'z-index': '100', 'backgroundColor': '#fff', 'margin': '0 20px' });
