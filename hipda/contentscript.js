@@ -29,21 +29,26 @@ function addShortcut() {
             menuitem = document.createElement('a');
             menuitem.innerHTML = "我的主题";
             menuitem.target = "_blank";
-            menuitem.href = 'http://' + document.domain + '/forum/my.php?item=threads';
+            menuitem.href = 'https://' + document.domain + '/forum/my.php?item=threads';
             document.getElementById('umenu').appendChild(menuitem);
 
-            document.getElementById('umenu').appendChild(document.createTextNode(" "));
-            menuitem = document.createElement('a');
-            menuitem.innerHTML = "我的回复";
-            menuitem.target = "_blank";
-            menuitem.href = 'http://' + document.domain + '/forum/my.php?item=posts';
-            document.getElementById('umenu').appendChild(menuitem);
+            
 
             document.getElementById('umenu').appendChild(document.createTextNode(" "));
             menuitem = document.createElement('a');
             menuitem.innerHTML = "我的收藏";
             menuitem.target = "_blank";
-            menuitem.href = 'http://' + document.domain + '/forum/my.php?item=favorites&type=thread';
+            menuitem.href = 'https://' + document.domain + '/forum/my.php?item=favorites&type=thread';
+            document.getElementById('umenu').appendChild(menuitem);
+
+
+            document.getElementById('umenu').appendChild(document.createTextNode(" | "));
+
+            document.getElementById('umenu').appendChild(document.createTextNode(" "));
+            menuitem = document.createElement('a');
+            menuitem.innerHTML = "查看新帖";
+            menuitem.target = "_blank";
+            menuitem.href = 'https://' + document.domain + '/forum/search.php?srchfrom=28800&searchsubmit=yes';
             document.getElementById('umenu').appendChild(menuitem);
         }
 
@@ -51,7 +56,44 @@ function addShortcut() {
 }
 
 
+function pagePreview() {
+    if (localStorage.getItem('pagePreview')) {
+        console.log('试验性预览功能已打开');
+        var previewIframe = $('<iframe id="page_preview"></iframe>');
+        previewIframe.css({ 'width': '600px', 'height': '500px', 'display': 'none', 'position': 'absolute', 'z-index': '100', 'backgroundColor': '#fff', 'margin': '0 20px' });
+        $('#subforum').before(previewIframe);
 
+        $('body').mousemove(function (event) {
+            var left = event.pageX + 150;
+            var top = event.pageY - 200;
+            $('#page_preview').css({ 'top': top, 'left': left, 'display': 'none' });
+
+        });
+
+        var links = $('[id^="thread_"]>a');
+        var pre = 'https://www.hi-pda.com/forum/';
+        var timer;
+        var delay = 800;
+        // '&action=printable'
+        links.each(function () {
+            var link = pre + $(this).attr('href') + '&action=printable';
+            $(this).hover(function (event) {
+                $(this).css('cursor', 'pointer');
+                $('#page_preview').attr('src', link);
+                //用location.replace替换url，不会将iframe访问加入历史记录，体验更好
+                document.getElementById('page_preview').contentWindow.location.replace(link);
+
+                timer = setTimeout(function () {
+                    $(page_preview).show();
+                }, delay);
+            }, function () {
+                $('#page_preview').css('display', 'none');
+            });
+
+
+        });
+    }
+}
 
 
 //恢复全文搜索
@@ -222,6 +264,7 @@ $(function () {
     var urlOfPage = window.location.href;
     //增加顶部菜单快捷入口
     addShortcut();
+    pagePreview();
 
 
     chrome.storage.sync.get('extentionConfig', function (obj) {
