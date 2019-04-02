@@ -48,7 +48,12 @@ function addShortcut() {
             menuitem = document.createElement('a');
             menuitem.innerHTML = "查看新帖";
             menuitem.target = "_blank";
-            menuitem.href = 'https://' + document.domain + '/forum/search.php?srchfrom=28800&searchsubmit=yes';
+            var full_url = window.location.href;
+            var fid = '2';
+            if (full_url.indexOf('fid=')>0){
+                fid = full_url.split('fid=')[1].split('&')[0];
+            }
+            menuitem.href = 'https://' + document.domain + '/forum//forumdisplay.php?fid=' + fid + '&orderby=dateline';
             document.getElementById('umenu').appendChild(menuitem);
         }
 
@@ -59,8 +64,10 @@ function addShortcut() {
 function pagePreview() {
     if (localStorage.getItem('pagePreview') == 'on') {
         console.log('试验性预览功能已打开');
-        var previewIframe = $('<iframe id="page_preview"></iframe>');
-        previewIframe.css({ 'width': '600px', 'height': '500px', 'display': 'none', 'position': 'absolute', 'z-index': '100', 'backgroundColor': '#fff', 'margin': '0 20px' });
+        var previewIframe = $('<iframe id="page_preview" scrolling="no"></iframe>');
+        var viewHeight = $(window).height();
+        var previewHeight = viewHeight * 0.6 + 'px' 
+        previewIframe.css({ 'width': '500px', 'height': previewHeight,'min-height':'350px', 'display': 'none', 'position': 'absolute', 'z-index': '100', 'backgroundColor': '#fff', 'margin': '0 20px' , 'overflow':'hidden'});
         $('#subforum').before(previewIframe);
 
         $('body').mousemove(function (event) {
