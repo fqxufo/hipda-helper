@@ -135,6 +135,17 @@ $(function () {
 
     });
 
+    var bg = chrome.extension.getBackgroundPage();
+    if (bg.hasnewpm) {
+        $('#notifybox').show();
+        $('#notifybox').click(bg.dismissNotify);
+        bg.hasnewpm = false;
+    }
+    
+
+
+
+
 
 
 
