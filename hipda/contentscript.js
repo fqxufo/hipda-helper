@@ -11,9 +11,11 @@ var defaultConfig = {
 
 //改变页面宽度,放在jquery load方法之外,可以解决页面闪烁的问题
 if (localStorage.getItem('pagewidth')) {
+    console.log('change width')
     var style = document.createElement('style');
     style.type = "text/css";
-    style.textContent = "body{width:" + localStorage.getItem('pagewidth') + ";margin:0 auto !important;}";
+    // style.textContent = "body{width:" + localStorage.getItem('pagewidth') + ";margin:0 auto !important;}";
+    style.textContent = ".wrap,#nav{width:" + localStorage.getItem('pagewidth') + " !important;}";
     (document.body || document.head || document.documentElement).appendChild(style);
 }
 
