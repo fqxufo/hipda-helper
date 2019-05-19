@@ -1,6 +1,6 @@
 {
   "name": "hipda helper",
-  "version": "0.652",
+  "version": "0.653",
   "description": "hipda助手扩展",
   "permissions": ["storage",
     "webRequest","*://*.hi-pda.com/*" ],

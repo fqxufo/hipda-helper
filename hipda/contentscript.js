@@ -132,7 +132,7 @@ function goodboyCanSee(url) {
 
 
 function hightlightOP(url) {
-    if (url.indexOf('viewthread') > 0) {
+    if (url.indexOf('tid') > 0) {
         var threadTid = url.split('tid=')[1].split('&')[0];
         console.log(threadTid);
 
@@ -203,7 +203,7 @@ function block(url, blacklist, uidblacklist) {
     }
 
     //帖子内容页面屏蔽
-    if (url.indexOf('viewthread') > 0) {
+    if (url.indexOf('tid') > 0) {
         var postList = $('.mainbox>div')
         $(postList).each(function () {
             var userName = $('.postinfo>a', this).text()
@@ -231,12 +231,12 @@ function block(url, blacklist, uidblacklist) {
 
 //在帖子内容页面id信息栏添加加入黑名单按钮
 function addToBlackList(url) {
-    if (url.indexOf('viewthread') > 0) {
+    if (url.indexOf('tid') > 0) {
         $('li.buddy').each(function () {
 
             var postauthor = $(this).parents('.postauthor');
             var userName = $('.postinfo>a', postauthor).text();
-            console.log(userName);
+            // console.log(userName);
             var listr = "<li style='background-image: url(/forum/images/icons/icon11.gif);'><a href='javascript:void(0)' class='block_it' title='加入黑名单'"
                 + "usernamestr=\"" + userName + "\">加黑名单</a></li>"
             $(this).after(listr);
