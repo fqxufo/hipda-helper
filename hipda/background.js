@@ -80,10 +80,8 @@ function getBlackList() {
 
 
     $('.blacklist  a[class=remove]', el).each(function () {
-
-
-      var gbkusername = $(this).attr('href').split("user=")[1];
-      // console.log(gbkusername);
+      var gbkusername = $(this).attr('href').replace('+',' ').split("user=")[1];
+      console.log(gbkusername);
 
       try {
         decodedusername = GBK.URI.decodeURI(gbkusername);

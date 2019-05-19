@@ -236,8 +236,9 @@ function addToBlackList(url) {
 
             var postauthor = $(this).parents('.postauthor');
             var userName = $('.postinfo>a', postauthor).text();
+            console.log(userName);
             var listr = "<li style='background-image: url(/forum/images/icons/icon11.gif);'><a href='javascript:void(0)' class='block_it' title='加入黑名单'"
-                + "usernamestr=" + userName + ">加黑名单</a></li>"
+                + "usernamestr=\"" + userName + "\">加黑名单</a></li>"
             $(this).after(listr);
         })
 
@@ -246,6 +247,7 @@ function addToBlackList(url) {
             var name = $(this).attr('usernamestr');
             var confirm_msg = confirm("您确认将 " + name + " 加入黑名单么？\n刷新页面生效");
             var addblockurl_raw = 'https://www.hi-pda.com/forum/pm.php?action=addblack&formhash=' + formhashstr + '&user=' + name;
+            console.log(addblockurl_raw)
             var addblockurl_encoded = GBK.URI.encodeURI(addblockurl_raw);
             if (confirm_msg == true) {
                 $.get(addblockurl_encoded, function () {
