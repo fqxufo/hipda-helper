@@ -11,9 +11,11 @@ var defaultConfig = {
 
 //改变页面宽度,放在jquery load方法之外,可以解决页面闪烁的问题
 if (localStorage.getItem('pagewidth')) {
+    console.log('change width')
     var style = document.createElement('style');
     style.type = "text/css";
-    style.textContent = "body{width:" + localStorage.getItem('pagewidth') + ";margin:0 auto !important;}";
+    // style.textContent = "body{width:" + localStorage.getItem('pagewidth') + ";margin:0 auto !important;}";
+    style.textContent = ".wrap,#nav{width:" + localStorage.getItem('pagewidth') + " !important;}";
     (document.body || document.head || document.documentElement).appendChild(style);
 }
 
@@ -29,21 +31,31 @@ function addShortcut() {
             menuitem = document.createElement('a');
             menuitem.innerHTML = "我的主题";
             menuitem.target = "_blank";
-            menuitem.href = 'http://' + document.domain + '/forum/my.php?item=threads';
+            menuitem.href = 'https://' + document.domain + '/forum/my.php?item=threads';
             document.getElementById('umenu').appendChild(menuitem);
 
-            document.getElementById('umenu').appendChild(document.createTextNode(" "));
-            menuitem = document.createElement('a');
-            menuitem.innerHTML = "我的回复";
-            menuitem.target = "_blank";
-            menuitem.href = 'http://' + document.domain + '/forum/my.php?item=posts';
-            document.getElementById('umenu').appendChild(menuitem);
+            
 
             document.getElementById('umenu').appendChild(document.createTextNode(" "));
             menuitem = document.createElement('a');
             menuitem.innerHTML = "我的收藏";
             menuitem.target = "_blank";
-            menuitem.href = 'http://' + document.domain + '/forum/my.php?item=favorites&type=thread';
+            menuitem.href = 'https://' + document.domain + '/forum/my.php?item=favorites&type=thread';
+            document.getElementById('umenu').appendChild(menuitem);
+
+
+            document.getElementById('umenu').appendChild(document.createTextNode(" | "));
+
+            document.getElementById('umenu').appendChild(document.createTextNode(" "));
+            menuitem = document.createElement('a');
+            menuitem.innerHTML = "查看新帖";
+            menuitem.target = "_blank";
+            var full_url = window.location.href;
+            var fid = '2';
+            if (full_url.indexOf('fid=')>0){
+                fid = full_url.split('fid=')[1].split('&')[0];
+            }
+            menuitem.href = 'https://' + document.domain + '/forum//forumdisplay.php?fid=' + fid + '&orderby=dateline';
             document.getElementById('umenu').appendChild(menuitem);
         }
 
@@ -51,7 +63,46 @@ function addShortcut() {
 }
 
 
+function pagePreview() {
+    if (localStorage.getItem('pagePreview') == 'on') {
+        console.log('试验性预览功能已打开');
+        var previewIframe = $('<iframe id="page_preview" scrolling="no"></iframe>');
+        var viewHeight = $(window).height();
+        var previewHeight = viewHeight * 0.6 + 'px' 
+        previewIframe.css({ 'width': '500px', 'height': previewHeight,'min-height':'350px', 'display': 'none', 'position': 'absolute', 'z-index': '100', 'backgroundColor': '#fff', 'margin': '0 20px' , 'overflow':'hidden'});
+        $('#subforum').before(previewIframe);
 
+        $('body').mousemove(function (event) {
+            var left = event.pageX + 150;
+            var top = event.pageY - 200;
+            $('#page_preview').css({ 'top': top, 'left': left, 'display': 'none' });
+
+        });
+
+        var links = $('[id^="thread_"]>a');
+        var pre = 'https://www.hi-pda.com/forum/';
+        var timer;
+        var delay = 800;
+        // '&action=printable'
+        links.each(function () {
+            var link = pre + $(this).attr('href') + '&action=printable';
+            $(this).hover(function (event) {
+                $(this).css('cursor', 'pointer');
+                $('#page_preview').attr('src', link);
+                //用location.replace替换url，不会将iframe访问加入历史记录，体验更好
+                document.getElementById('page_preview').contentWindow.location.replace(link);
+
+                timer = setTimeout(function () {
+                    $(page_preview).show();
+                }, delay);
+            }, function () {
+                $('#page_preview').css('display', 'none');
+            });
+
+
+        });
+    }
+}
 
 
 //恢复全文搜索
@@ -185,8 +236,9 @@ function addToBlackList(url) {
 
             var postauthor = $(this).parents('.postauthor');
             var userName = $('.postinfo>a', postauthor).text();
+            console.log(userName);
             var listr = "<li style='background-image: url(/forum/images/icons/icon11.gif);'><a href='javascript:void(0)' class='block_it' title='加入黑名单'"
-                + "usernamestr=" + userName + ">加黑名单</a></li>"
+                + "usernamestr=\"" + userName + "\">加黑名单</a></li>"
             $(this).after(listr);
         })
 
@@ -195,6 +247,7 @@ function addToBlackList(url) {
             var name = $(this).attr('usernamestr');
             var confirm_msg = confirm("您确认将 " + name + " 加入黑名单么？\n刷新页面生效");
             var addblockurl_raw = 'https://www.hi-pda.com/forum/pm.php?action=addblack&formhash=' + formhashstr + '&user=' + name;
+            console.log(addblockurl_raw)
             var addblockurl_encoded = GBK.URI.encodeURI(addblockurl_raw);
             if (confirm_msg == true) {
                 $.get(addblockurl_encoded, function () {
@@ -222,6 +275,7 @@ $(function () {
     var urlOfPage = window.location.href;
     //增加顶部菜单快捷入口
     addShortcut();
+    pagePreview();
 
 
     chrome.storage.sync.get('extentionConfig', function (obj) {

@@ -4,7 +4,8 @@ var defaultConfig = {
     pageWidth: "100%",
     goodboySee: true,
     blockBSTop: true,
-    highlightOP: true
+    highlightOP: true,
+    enableShortcut:false
 }
 
 
@@ -40,6 +41,11 @@ function showOption(currentConfig) {
     if (currentConfig.highlightOP) {
         $('#toggle_highlightop').bootstrapSwitch('state', true);
     }
+    if (currentConfig.enableShortcut) {
+        $('#toggle_shortcut').bootstrapSwitch('state', true);
+    }
+
+
 
     $('#btnpageWidth').text(currentConfig.pageWidth);
 
@@ -67,6 +73,13 @@ function userChangeOption(currentConfig) {
         currentConfig.highlightOP = state;
         // console.log(currentConfig);
     });
+
+    $('#toggle_shortcut').on('switchChange.bootstrapSwitch', function (event, state) {
+        currentConfig.enableShortcut = state;
+        // console.log(currentConfig);
+    });
+
+
 
     $('.droppagewidth>a').click(function () {
         $('#btnpageWidth').text($(this).text());
@@ -121,6 +134,17 @@ $(function () {
         console.log(currentConfig);
 
     });
+
+    var bg = chrome.extension.getBackgroundPage();
+    if (bg.hasnewpm) {
+        $('#notifybox').show();
+        $('#notifybox').click(bg.dismissNotify);
+        bg.hasnewpm = false;
+    }
+    
+
+
+
 
 
 

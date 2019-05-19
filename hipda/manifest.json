@@ -1,9 +1,9 @@
 {
   "name": "hipda helper",
-  "version": "0.63",
+  "version": "0.652",
   "description": "hipda助手扩展",
-  "permissions": ["storage" ,
-    "webRequest","*://*.hi-pda.com/*"],
+  "permissions": ["storage",
+    "webRequest","*://*.hi-pda.com/*" ],
   
   "background": {
     "scripts": ["jquery3.js","gbk.js","background.js"]

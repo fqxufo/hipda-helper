@@ -6,20 +6,82 @@ chrome.omnibox.onInputEntered.addListener(
     chrome.tabs.create({ url: encodedurl });
   });
 
+
+//触发checknewpm的ajax
+function checkpm() {
+  var t = Date.now();
+  // console.log(t);
+  $.get('https://www.hi-pda.com/forum/pm.php?checknewpm=' + t + '&inajax=1&ajaxtarget=myprompt_check');
+}
+
+setInterval(checkpm, 10 * 1000);
+checkpm();
+
+
+//清楚badge提示，并延迟定时任务
+function dismissNotify() {
+  chrome.browserAction.setBadgeText({ text: '' });
+  clearInterval(getblackInterval);
+  setTimeout(() => {
+    getblackInterval = setInterval(getBlackList, 60 * 1000);
+
+  }, 60 * 1000);
+}
+
+
+
 // 定时获取黑名单,存储在chrome.storage里
 
+var hasnewpm = false;
+var hasnewmsg = false;
 function getBlackList() {
+
+  //获取消息提醒
   $.get("https://www.hi-pda.com/forum/pm.php?action=viewblack", function (data) {
 
     var arr = [];
 
     var el = $('<div></div>');
     el.html(data);
+
+    var prompt_pm = $('#prompt_pm', el);
+    var prompt_threads = $('#prompt_threads', el);
+    if (prompt_pm.length > 0) {
+      var newpm = $(prompt_pm).parent().css('display');
+      var newmsg = $(prompt_threads).parent().css('display');
+
+      if (!(newpm == 'none')) {
+        hasnewpm = true;
+        chrome.browserAction.setBadgeText({ text: '1' });
+        chrome.browserAction.setBadgeBackgroundColor({ color: [255, 0, 0, 255] });
+      }
+
+      // if (!(newmsg == 'none')) {
+      //   hasnewmsg = true;
+      //   chrome.browserAction.setBadgeText({text: '1'});
+      //   chrome.browserAction.setBadgeBackgroundColor({color: [255, 0, 0, 255]});
+      // }
+
+
+
+
+
+
+
+      if (newpm == 'none') {
+        chrome.browserAction.setBadgeText({ text: '' });
+      }
+
+      console.log('私信有吗' + !(newpm == 'none'));
+      console.log('帖子消息有吗' + !(newmsg == 'none'));
+    }
+
+    //获取黑名单
+
+
     $('.blacklist  a[class=remove]', el).each(function () {
-
-
-      var gbkusername = $(this).attr('href').split("user=")[1];
-      // console.log(gbkusername);
+      var gbkusername = $(this).attr('href').replace('+',' ').split("user=")[1];
+      console.log(gbkusername);
 
       try {
         decodedusername = GBK.URI.decodeURI(gbkusername);
@@ -35,10 +97,10 @@ function getBlackList() {
           chrome.storage.local.get('uidblacklist', function (result) {
             if (typeof result.uidblacklist == 'undefined') {
               // console.log(result.uidblacklist);
-              
+
               console.log('uidblacklist add' + newuid);
               uidblackarr.push(newuid);
-              
+
               chrome.storage.local.set({ 'uidblacklist': uidblackarr });
               return;
 
@@ -46,15 +108,15 @@ function getBlackList() {
             }
 
 
-              uidblackarr = result.uidblacklist;
-              if (uidblackarr.indexOf(newuid) == -1){
-                console.log('uidblacklist add' + newuid);
+            uidblackarr = result.uidblacklist;
+            if (uidblackarr.indexOf(newuid) == -1) {
+              console.log('uidblacklist add' + newuid);
 
               uidblackarr.push(newuid);
-              }
-              chrome.storage.local.set({ 'uidblacklist': uidblackarr });
-              
-            
+            }
+            chrome.storage.local.set({ 'uidblacklist': uidblackarr });
+
+
           });
         });
 
@@ -79,7 +141,7 @@ function getBlackList() {
   });
 }
 
-setInterval(getBlackList, 60 * 1000);
+var getblackInterval = setInterval(getBlackList, 60 * 1000);
 getBlackList();
 
 
@@ -93,17 +155,17 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 
 //定时清除uidblacklist
-function autoremovechromestorage(){
-  chrome.storage.local.remove('uidblacklist',function(){
+function autoremovechromestorage() {
+  chrome.storage.local.remove('uidblacklist', function () {
     console.log('已清除uidblacklist')
     var error = chrome.runtime.lastError;
-       if (error) {
-           console.error(error);
-       }
-   })
+    if (error) {
+      console.error(error);
+    }
+  })
 }
 
-setInterval(autoremovechromestorage,120 * 1000);
+setInterval(autoremovechromestorage, 120 * 1000);
 
 autoremovechromestorage();
 
