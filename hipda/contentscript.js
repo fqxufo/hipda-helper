@@ -9,15 +9,21 @@ var defaultConfig = {
 }
 
 
-//改变页面宽度,放在jquery load方法之外,可以解决页面闪烁的问题
-if (localStorage.getItem('pagewidth')) {
-    console.log('change width')
+//改变页面宽度，给已浏览过的标题淡化字体颜色,放在jquery load方法之外,可以解决页面闪烁的问题
+function CSSChange() {
     var style = document.createElement('style');
     style.type = "text/css";
-    // style.textContent = "body{width:" + localStorage.getItem('pagewidth') + ";margin:0 auto !important;}";
-    style.textContent = ".wrap,#nav{width:" + localStorage.getItem('pagewidth') + " !important;}";
+    style.textContent = ".threadlist tr a:visited{color:#aaa;}\n"
+    if (localStorage.getItem('pagewidth')) {
+        style.textContent += ".wrap,#nav{width:" + localStorage.getItem('pagewidth') + " !important;}";
+    }
     (document.body || document.head || document.documentElement).appendChild(style);
+
+
 }
+
+CSSChange();
+
 
 
 //增加我的主题,我的回复,我的收藏三个快捷入口(代码参考hipda tools脚本)
@@ -34,7 +40,7 @@ function addShortcut() {
             menuitem.href = 'https://' + document.domain + '/forum/my.php?item=threads';
             document.getElementById('umenu').appendChild(menuitem);
 
-            
+
 
             document.getElementById('umenu').appendChild(document.createTextNode(" "));
             menuitem = document.createElement('a');
@@ -52,7 +58,7 @@ function addShortcut() {
             menuitem.target = "_blank";
             var full_url = window.location.href;
             var fid = '2';
-            if (full_url.indexOf('fid=')>0){
+            if (full_url.indexOf('fid=') > 0) {
                 fid = full_url.split('fid=')[1].split('&')[0];
             }
             menuitem.href = 'https://' + document.domain + '/forum//forumdisplay.php?fid=' + fid + '&orderby=dateline';
@@ -68,8 +74,8 @@ function pagePreview() {
         console.log('试验性预览功能已打开');
         var previewIframe = $('<iframe id="page_preview" scrolling="no"></iframe>');
         var viewHeight = $(window).height();
-        var previewHeight = viewHeight * 0.6 + 'px' 
-        previewIframe.css({ 'width': '500px', 'height': previewHeight,'min-height':'350px', 'display': 'none', 'position': 'absolute', 'z-index': '100', 'backgroundColor': '#fff', 'margin': '0 20px' , 'overflow':'hidden'});
+        var previewHeight = viewHeight * 0.6 + 'px'
+        previewIframe.css({ 'width': '500px', 'height': previewHeight, 'min-height': '350px', 'display': 'none', 'position': 'absolute', 'z-index': '100', 'backgroundColor': '#fff', 'margin': '0 20px', 'overflow': 'hidden' });
         $('#subforum').before(previewIframe);
 
         $('body').mousemove(function (event) {
