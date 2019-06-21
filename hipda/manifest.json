@@ -1,6 +1,6 @@
 {
   "name": "hipda helper",
-  "version": "0.654",
+  "version": "0.660",
   "description": "hipda助手扩展",
   "permissions": ["storage",
     "webRequest","*://*.hi-pda.com/*" ],
@@ -38,7 +38,7 @@
 "content_scripts": [
   {
     "matches": ["https://www.hi-pda.com/forum/*"],
-    "js": ["jquery3.js","gbk.js","contentscript.js"],
+    "js": ["jquery3.js","gbk.js","contentscript.js","topcolor.js"],
     "run_at": "document_start"
   }
 ]
