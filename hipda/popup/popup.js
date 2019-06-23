@@ -99,7 +99,7 @@ function confirmChange(currentConfig) {
     $('#confirm').click(function () {
         console.log('2' + currentConfig.pageWidth);
         currentConfig.pageWidth = $('#btnpageWidth').text()
-        chrome.storage.sync.set({ 'extentionConfig': currentConfig });
+        chrome.storage.local.set({ 'extentionConfig': currentConfig });
         $('.alert-success').fadeIn(1000);
 
         $('.alert-success').delay(2000).fadeOut(1000);
@@ -111,7 +111,7 @@ function backToDefault(defaultConfig) {
     $('#backToDefault').click(function () {
         currentConfig = JSON.parse(JSON.stringify(defaultConfig));
         showOption(defaultConfig);
-        chrome.storage.sync.set({ 'extentionConfig': defaultConfig });
+        chrome.storage.local.set({ 'extentionConfig': defaultConfig });
         console.log('1' + currentConfig.pageWidth);
 
     });
@@ -122,10 +122,10 @@ $(function () {
 
     
 
-    chrome.storage.sync.get('extentionConfig', function (obj) {
+    chrome.storage.local.get('extentionConfig', function (obj) {
 
         if (typeof obj.extentionConfig == 'undefined') {
-            chrome.storage.sync.set({ 'extentionConfig': defaultConfig });
+            chrome.storage.local.set({ 'extentionConfig': defaultConfig });
         }
 
         if (typeof obj.extentionConfig !== 'undefined') {

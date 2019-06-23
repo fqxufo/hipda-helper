@@ -284,10 +284,10 @@ $(function () {
     pagePreview();
 
 
-    chrome.storage.sync.get('extentionConfig', function (obj) {
+    chrome.storage.local.get('extentionConfig', function (obj) {
         reviveFullSearch(urlOfPage);
         if (typeof obj.extentionConfig == 'undefined') {
-            chrome.storage.sync.set({ 'extentionConfig': defaultConfig });
+            chrome.storage.local.set({ 'extentionConfig': defaultConfig });
             removeBSstickthreads(urlOfPage);
             //通过chrome.storage获取黑名单,进行屏蔽功能
             chrome.storage.local.get(function (result) {
