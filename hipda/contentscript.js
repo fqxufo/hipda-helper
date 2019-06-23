@@ -290,9 +290,15 @@ $(function () {
             chrome.storage.sync.set({ 'extentionConfig': defaultConfig });
             removeBSstickthreads(urlOfPage);
             //通过chrome.storage获取黑名单,进行屏蔽功能
-            chrome.storage.local.get('blacklist', function (result) {
-                // console.log('黑名单数据: ' + result.blacklist);
-                block(urlOfPage, result.blacklist, result.uidblacklist);
+            chrome.storage.local.get(function (result) {
+                console.log('黑名单数据: ' , result.blacklist);
+                var namelist = result.blacklist;
+                var icloudlist = result.icloudblacklist
+                if (typeof icloudlist !== 'undefined') {
+                    console.log('存在iCloud黑名单',icloudlist);
+                    namelist = namelist.concat(icloudlist);
+                }
+                block(urlOfPage, namelist, result.uidblacklist);
             });
 
             //用户手动添加黑名单
@@ -312,9 +318,15 @@ $(function () {
             currentConfig = obj.extentionConfig;
             if (currentConfig.enableBlacklist) {
                 //通过chrome.storage获取黑名单,进行屏蔽功能
-                chrome.storage.local.get(['blacklist', 'uidblacklist'], function (result) {
-                    // console.log('黑名单数据: ' + result.blacklist);
-                    block(urlOfPage, result.blacklist, result.uidblacklist);
+                chrome.storage.local.get(function (result) {
+                    console.log('黑名单数据: ' ,result.blacklist);
+                    var namelist = result.blacklist;
+                    var icloudlist = result.icloudblacklist
+                    if (typeof icloudlist !== 'undefined') {
+                        console.log('存在iCloud黑名单',icloudlist);
+                        namelist = namelist.concat(icloudlist);
+                    }
+                    block(urlOfPage, namelist, result.uidblacklist);
                 });
                 //用户手动添加黑名单
                 addToBlackList(urlOfPage);

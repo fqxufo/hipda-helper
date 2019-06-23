@@ -1,6 +1,6 @@
 {
   "name": "hipda helper",
-  "version": "0.660",
+  "version": "0.670",
   "description": "hipda助手扩展",
   "permissions": ["activeTab", "declarativeContent", "storage" ],
   
@@ -34,5 +34,14 @@
     "js": ["jquery3.js","gbk.js","contentscript.js","topcolor.js"],
     "run_at": "document_start"
   }
-]
+],
+
+"web_accessible_resources":[
+  "clouddemo.html",
+  "main.js"
+],
+
+"content_security_policy": "script-src 'self' https://cdn.apple-cloudkit.com; object-src 'self'"
+
+
 }

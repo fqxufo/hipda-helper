@@ -19,6 +19,12 @@ function showOption(currentConfig) {
 
 
     var manifestData = chrome.runtime.getManifest();
+    var iosBlacklisturl = chrome.runtime.getURL('clouddemo.html');
+
+    $('#iOSBlacklist').attr('href',iosBlacklisturl);
+
+
+
 
     $('#vernumber').text('v' + manifestData.version);
     $('.bootstrap-switch-wrapper').addClass('float-right');
