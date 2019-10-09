@@ -178,8 +178,27 @@ function hightlightOP(url) {
 
 //屏蔽BS版置顶帖
 function removeBSstickthreads(url) {
-    if (url.indexOf('fid=6') > 0) {
-        $('tbody[id^="stickthread"]').hide()
+    // if (url.indexOf('fid=6') > 0) {
+    //     $('tbody[id^="stickthread"]').hide()
+    // }
+
+    var inBSForum = url.indexOf('fid=6') > 0;
+    var isPage1 = url.indexOf('page=1') > 0;
+    var hasNoPageNumber = url.indexOf('page=') < 0;
+
+    if ((inBSForum && hasNoPageNumber) || (isPage1 && inBSForum) ) {
+        //分割置顶和其他帖子的分界线tbody ‘版块主题’
+        var devidedTbody = document.querySelector("#moderate > table > tbody:not([id])");
+        var indexNum = $(devidedTbody).index();
+
+        var toHideList = document.querySelectorAll(`#moderate > table > tbody:nth-child(-n+${indexNum})`);
+        function hideThread(thread) {
+            thread.style.display = 'none';
+        }
+        toHideList.forEach(hideThread);
+
+
+        
     }
 }
 
