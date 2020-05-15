@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js"></script>
+    <style>
+      #main {
+        position: absolute;
+        left: 40%;
+        top: 10%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="main">
+      <h2>首先点击下面的sign in按钮登录iCloud账号</h2>
+      <div id="apple-sign-in-button"></div>
+
+      <div id="apple-sign-out-button"></div>
+
+      <h1>icloud 黑名单</h1>
+
+      <script src="icloudlist.js"></script>
+
+      <input
+        type="button"
+        value="获取数据"
+        id="fetchbutton"
+        style="
+          height: 40px;
+          width: 218px;
+          cursor: pointer;
+          border-style: solid;
+          border-width: 1px;
+          border-radius: 5px;
+          border-color: black;
+          background-color: white;
+          display: block;
+          opacity: 1;
+        "
+      />
+
+      <h2>最后修改时间 <span id="changetime"></span></h2>
+    </div>
+  </body>
+</html>

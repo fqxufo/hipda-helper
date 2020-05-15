@@ -178,8 +178,27 @@ function hightlightOP(url) {
 
 //屏蔽BS版置顶帖
 function removeBSstickthreads(url) {
-    if (url.indexOf('fid=6') > 0) {
-        $('tbody[id^="stickthread"]').hide()
+    // if (url.indexOf('fid=6') > 0) {
+    //     $('tbody[id^="stickthread"]').hide()
+    // }
+
+    var inBSForum = url.indexOf('fid=6') > 0;
+    var isPage1 = url.indexOf('page=1') > 0;
+    var hasNoPageNumber = url.indexOf('page=') < 0;
+
+    if ((inBSForum && hasNoPageNumber) || (isPage1 && inBSForum) ) {
+        //分割置顶和其他帖子的分界线tbody ‘版块主题’
+        var devidedTbody = document.querySelector("#moderate > table > tbody:not([id])");
+        var indexNum = $(devidedTbody).index();
+
+        var toHideList = document.querySelectorAll(`#moderate > table > tbody:nth-child(-n+${indexNum})`);
+        function hideThread(thread) {
+            thread.style.display = 'none';
+        }
+        toHideList.forEach(hideThread);
+
+
+        
     }
 }
 
@@ -290,9 +309,15 @@ $(function () {
             chrome.storage.local.set({ 'extentionConfig': defaultConfig });
             removeBSstickthreads(urlOfPage);
             //通过chrome.storage获取黑名单,进行屏蔽功能
-            chrome.storage.local.get('blacklist', function (result) {
-                // console.log('黑名单数据: ' + result.blacklist);
-                block(urlOfPage, result.blacklist, result.uidblacklist);
+            chrome.storage.local.get(function (result) {
+                console.log('黑名单数据: ' , result.blacklist);
+                var namelist = result.blacklist;
+                var icloudlist = result.icloudblacklist
+                if (typeof icloudlist !== 'undefined') {
+                    console.log('存在iCloud黑名单',icloudlist);
+                    namelist = namelist.concat(icloudlist);
+                }
+                block(urlOfPage, namelist, result.uidblacklist);
             });
 
             //用户手动添加黑名单
@@ -312,9 +337,15 @@ $(function () {
             currentConfig = obj.extentionConfig;
             if (currentConfig.enableBlacklist) {
                 //通过chrome.storage获取黑名单,进行屏蔽功能
-                chrome.storage.local.get(['blacklist', 'uidblacklist'], function (result) {
-                    // console.log('黑名单数据: ' + result.blacklist);
-                    block(urlOfPage, result.blacklist, result.uidblacklist);
+                chrome.storage.local.get(function (result) {
+                    console.log('黑名单数据: ' ,result.blacklist);
+                    var namelist = result.blacklist;
+                    var icloudlist = result.icloudblacklist
+                    if (typeof icloudlist !== 'undefined') {
+                        console.log('存在iCloud黑名单',icloudlist);
+                        namelist = namelist.concat(icloudlist);
+                    }
+                    block(urlOfPage, namelist, result.uidblacklist);
                 });
                 //用户手动添加黑名单
                 addToBlackList(urlOfPage);
