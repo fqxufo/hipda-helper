@@ -1,6 +1,6 @@
 {
   "name": "hipda helper",
-  "version": "0.673",
+  "version": "0.674",
   "description": "hipda助手扩展",
   "permissions": ["storage", "webRequest", "*://*.hi-pda.com/*"],
 
@@ -40,7 +40,5 @@
       "run_at": "document_start"
     }
   ],
-  "web_accessible_resources": ["clouddemo.html", "main.js"],
-
-  "content_security_policy": "script-src 'self' https://cdn.apple-cloudkit.com; object-src 'self'"
+  "web_accessible_resources": ["clouddemo.html", "main.js"]
 }
