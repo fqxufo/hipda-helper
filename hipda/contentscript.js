@@ -86,7 +86,7 @@ function pagePreview() {
         });
 
         var links = $('[id^="thread_"]>a');
-        var pre = 'https://www.hi-pda.com/forum/';
+        var pre = 'https://www.4d4y.com/forum/';
         var timer;
         var delay = 800;
         // '&action=printable'
@@ -186,7 +186,7 @@ function removeBSstickthreads(url) {
     var isPage1 = url.indexOf('page=1') > 0;
     var hasNoPageNumber = url.indexOf('page=') < 0;
 
-    if ((inBSForum && hasNoPageNumber) || (isPage1 && inBSForum) ) {
+    if ((inBSForum && hasNoPageNumber) || (isPage1 && inBSForum)) {
         //分割置顶和其他帖子的分界线tbody ‘版块主题’
         var devidedTbody = document.querySelector("#moderate > table > tbody:not([id])");
         var indexNum = $(devidedTbody).index();
@@ -198,7 +198,7 @@ function removeBSstickthreads(url) {
         toHideList.forEach(hideThread);
 
 
-        
+
     }
 }
 
@@ -271,7 +271,7 @@ function addToBlackList(url) {
         $('.block_it').click(function () {
             var name = $(this).attr('usernamestr');
             var confirm_msg = confirm("您确认将 " + name + " 加入黑名单么？\n刷新页面生效");
-            var addblockurl_raw = 'https://www.hi-pda.com/forum/pm.php?action=addblack&formhash=' + formhashstr + '&user=' + name;
+            var addblockurl_raw = 'https://www.4d4y.com/forum/pm.php?action=addblack&formhash=' + formhashstr + '&user=' + name;
             console.log(addblockurl_raw)
             var addblockurl_encoded = GBK.URI.encodeURI(addblockurl_raw);
             if (confirm_msg == true) {
@@ -310,11 +310,11 @@ $(function () {
             removeBSstickthreads(urlOfPage);
             //通过chrome.storage获取黑名单,进行屏蔽功能
             chrome.storage.local.get(function (result) {
-                console.log('黑名单数据: ' , result.blacklist);
+                console.log('黑名单数据: ', result.blacklist);
                 var namelist = result.blacklist;
                 var icloudlist = result.icloudblacklist
                 if (typeof icloudlist !== 'undefined') {
-                    console.log('存在iCloud黑名单',icloudlist);
+                    console.log('存在iCloud黑名单', icloudlist);
                     namelist = namelist.concat(icloudlist);
                 }
                 block(urlOfPage, namelist, result.uidblacklist);
@@ -338,11 +338,11 @@ $(function () {
             if (currentConfig.enableBlacklist) {
                 //通过chrome.storage获取黑名单,进行屏蔽功能
                 chrome.storage.local.get(function (result) {
-                    console.log('黑名单数据: ' ,result.blacklist);
+                    console.log('黑名单数据: ', result.blacklist);
                     var namelist = result.blacklist;
                     var icloudlist = result.icloudblacklist
                     if (typeof icloudlist !== 'undefined') {
-                        console.log('存在iCloud黑名单',icloudlist);
+                        console.log('存在iCloud黑名单', icloudlist);
                         namelist = namelist.concat(icloudlist);
                     }
                     block(urlOfPage, namelist, result.uidblacklist);
