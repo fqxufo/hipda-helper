@@ -1,7 +1,7 @@
 // 给omnibox添加快捷搜索
 chrome.omnibox.onInputEntered.addListener(
   function (text) {
-    var newURL = 'https://www.hi-pda.com/forum/search.php?srchtype=fulltext&searchsubmit=true&st=on&srchuname=&srchfilter=all&srchfrom=0&before=&orderby=lastpost&ascdesc=desc&srchfid%5B0%5D=all&srchtxt=' + text;
+    var newURL = 'https://www.4d4y.com/forum/search.php?srchtype=fulltext&searchsubmit=true&st=on&srchuname=&srchfilter=all&srchfrom=0&before=&orderby=lastpost&ascdesc=desc&srchfid%5B0%5D=all&srchtxt=' + text;
     var encodedurl = GBK.URI.encodeURI(newURL)
     chrome.tabs.create({ url: encodedurl });
   });
@@ -11,7 +11,7 @@ chrome.omnibox.onInputEntered.addListener(
 function checkpm() {
   var t = Date.now();
   // console.log(t);
-  $.get('https://www.hi-pda.com/forum/pm.php?checknewpm=' + t + '&inajax=1&ajaxtarget=myprompt_check');
+  $.get('https://www.4d4y.com/forum/pm.php?checknewpm=' + t + '&inajax=1&ajaxtarget=myprompt_check');
 }
 
 setInterval(checkpm, 10 * 1000);
@@ -37,7 +37,7 @@ var hasnewmsg = false;
 function getBlackList() {
 
   //获取消息提醒
-  $.get("https://www.hi-pda.com/forum/pm.php?action=viewblack", function (data) {
+  $.get("https://www.4d4y.com/forum/pm.php?action=viewblack", function (data) {
 
     var arr = [];
 
@@ -88,7 +88,7 @@ function getBlackList() {
       }
       catch (error) {
         console.log('不支持繁体字ID')
-        infoUrl = 'https://www.hi-pda.com/forum/space.php?username=' + gbkusername;
+        infoUrl = 'https://www.4d4y.com/forum/space.php?username=' + gbkusername;
         $.get(infoUrl, function (infopage) {
           // console.log(infopage.match(/eccredit.php\?uid=\d+/));
           var uidurl = infopage.match(/eccredit.php\?uid=\d+/)[0];

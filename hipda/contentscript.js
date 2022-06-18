@@ -86,7 +86,7 @@ function pagePreview() {
         });
 
         var links = $('[id^="thread_"]>a');
-        var pre = 'https://www.hi-pda.com/forum/';
+        var pre = 'https://www.4d4y.com/forum/';
         var timer;
         var delay = 800;
         // '&action=printable'
@@ -271,7 +271,7 @@ function addToBlackList(url) {
         $('.block_it').click(function () {
             var name = $(this).attr('usernamestr');
             var confirm_msg = confirm("您确认将 " + name + " 加入黑名单么？\n刷新页面生效");
-            var addblockurl_raw = 'https://www.hi-pda.com/forum/pm.php?action=addblack&formhash=' + formhashstr + '&user=' + name;
+            var addblockurl_raw = 'https://www.4d4y.com/forum/pm.php?action=addblack&formhash=' + formhashstr + '&user=' + name;
             console.log(addblockurl_raw)
             var addblockurl_encoded = GBK.URI.encodeURI(addblockurl_raw);
             if (confirm_msg == true) {

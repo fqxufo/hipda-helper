@@ -1,8 +1,8 @@
 {
   "name": "hipda helper",
-  "version": "0.674",
+  "version": "0.675",
   "description": "hipda助手扩展",
-  "permissions": ["storage", "webRequest", "*://*.hi-pda.com/*"],
+  "permissions": ["storage", "webRequest", "*://*.4d4y.com/*"],
 
   "background": {
     "scripts": ["jquery3.js", "gbk.js", "background.js"]
@@ -35,7 +35,7 @@
 
   "content_scripts": [
     {
-      "matches": ["https://www.hi-pda.com/forum/*"],
+      "matches": ["https://www.4d4y.com/forum/*"],
       "js": ["jquery3.js", "gbk.js", "contentscript.js", "topcolor.js"],
       "run_at": "document_start"
     }
